@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Image from "next/image";
 import LogoIcon from "./logo.svg";
+import Link from "next/link";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,14 +32,16 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <main className="h-full">
-          <nav className="bg-neutral-300 ">
+          <nav className="bg-neutral-300 flex justify-center">
             <ul className="bg-transparent py-3 px-3 flex flex-row"> 
               <Image 
               src={LogoIcon}
               alt="stellaN" 
               className="h-10 w-10" 
               />
-             <li className="pt-1">checkYourWriting</li>
+             <li className="pt-1">
+              <Link href='/'>CheckYourWriting</Link>
+              </li>
             </ul>
           </nav>
           {children}
