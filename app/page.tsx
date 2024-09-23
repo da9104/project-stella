@@ -1,13 +1,15 @@
 "use client"
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { useChat } from "ai/react";
 import Textarea from "react-textarea-autosize";
-
+import DiffMatchPatch from 'diff-match-patch';
 
 export default function Home() {
   const {messages, input, handleInputChange, handleSubmit} = useChat({
     api: '/api',
   })
+    // State to hold the diff HTML
+    const [diffHtml, setDiffHtml] = useState("");
 
    // 자동 스크롤링 auto scrolling
     const messagesEndRef = useRef<HTMLInputElement>(null)
@@ -30,6 +32,29 @@ export default function Home() {
     },
     [handleSubmit]
   );
+
+  // Function to compute and set the diff
+  const computeDiff = (userInput, generatedText) => {
+    const dmp = new DiffMatchPatch();
+    const diffs = dmp.diff_main(userInput, generatedText);
+    dmp.diff_cleanupSemantic(diffs);
+    return dmp.diff_prettyHtml(diffs);
+  };
+
+ // Effect to compute the diff when the latest message pair (user and bot) changes
+ useEffect(() => {
+  if (messages.length >= 2) {
+    const lastMessage = messages[messages.length - 1];
+    const secondLastMessage = messages[messages.length - 2];
+    // Only compute diff when comparing a user message to a bot message
+    if (lastMessage.role === 'assistant' && secondLastMessage.role === 'user') {
+      const userInput = secondLastMessage.content;  // User message
+      const generatedText = lastMessage.content;    // AI-generated message
+      const diff = computeDiff(userInput, generatedText);
+      setDiffHtml(diff);  // Set the diff HTML
+    }
+  }
+}, [messages]);
 
   return (
    <div className="min-h-screen bg-neutral-300 flex justify-center ">
@@ -73,8 +98,12 @@ export default function Home() {
               )}
               </div>
             ))}
-       <div ref={messagesEndRef} />
-       </div>
+          {/* Display the diff HTML */}
+          {diffHtml && (
+            <div className="diff-output" dangerouslySetInnerHTML={{ __html: diffHtml }} />
+          )}
+          <div ref={messagesEndRef} />
+        </div>
     ) : (
       <div className="w-full flex justify-center pt-32">
         <h1 className="font-bold text-3xl">

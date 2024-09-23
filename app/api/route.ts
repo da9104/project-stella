@@ -1,11 +1,13 @@
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { Configuration, OpenAIApi } from "openai-edge";
+import DiffMatchPatch from 'diff-match-patch'
 
 const config = new Configuration({ 
     apiKey: process.env.OPENAI_API_KEY
 }) 
 
 const openai = new OpenAIApi(config)
+const dmp = new DiffMatchPatch()
 
 export const runtime = "edge"
 
@@ -22,8 +24,23 @@ export async function POST(req: Request) {
         stream: true, // stream the response
         messages: messages,
     })
-        const stream = OpenAIStream(response)
-        return new StreamingTextResponse(stream)
+        const stream = OpenAIStream(response);
+        // Assuming the user input is the last message in the array
+        const userInput = messages[messages.length - 1].content;
+
+        // Pass the stream as a response without converting to a string
+        return new StreamingTextResponse(stream, {
+            async onChunk(chunk: string) {
+            // Compare diff on each chunk received (adjust logic as needed)
+            const diffs = dmp.diff_main(userInput, chunk);
+            dmp.diff_cleanupSemantic(diffs);
+            const diffHtml = dmp.diff_prettyHtml(diffs);
+    
+            // Optionally, log the diff for debugging
+            console.log("Diff HTML: ", diffHtml);
+            },
+        });
+
     } catch (error) {
         return new Response(JSON.stringify({ error: error.message }), { status: 500 });
     }
