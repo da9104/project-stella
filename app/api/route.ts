@@ -64,6 +64,6 @@ export async function POST(req: Request) {
         return new StreamingTextResponse(transformedStream);
 
     } catch (error) {
-        return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+        return new Response(JSON.stringify({ error: (error as Error).message }), { status: 500 });
     }
 }
