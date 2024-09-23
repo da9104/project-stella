@@ -10,8 +10,6 @@ const config = new Configuration({
 const openai = new OpenAIApi(config)
 const dmp = new DiffMatchPatch()
 
-// export const runtime = "edge"
-
 export async function POST(req: Request) {
     try {
         const { messages } = await req.json()
@@ -25,31 +23,45 @@ export async function POST(req: Request) {
         stream: true, // stream the response
         messages: messages,
     })
-        const stream = OpenAIStream(response, {
-            onCompletion: async (completion: string) => {
-              await prisma.message.create({
+
+    let fullCompletion = '';
+
+        // chunk & diff 핸들링 
+        const transformStream = new TransformStream({
+            transform(chunk, controller) {
+                const text = new TextDecoder().decode(chunk);
+                fullCompletion += text;
+
+                const diffs = dmp.diff_main(userInput, fullCompletion);
+                dmp.diff_cleanupSemantic(diffs);
+                const diffHtml = dmp.diff_prettyHtml(diffs);
+
+                // log the diff for debugging
+                // console.log("Diff HTML: ", diffHtml);
+
+                controller.enqueue(chunk);
+            },
+            flush(controller) {
+                // DB 저장 Save the full completion to the database
+                prisma.message.create({
                     data: {
-                        answer: completion,
-                        question: messages.slice(-1)[0].content,
+                        answer: fullCompletion,
+                        question: userInput,
                     },
-                });
+                }).catch(error => console.error('Error saving to database:', error));
             }
         });
-        // Assuming the user input is the last message in the array
-        const userInput = messages[messages.length - 1].content;
 
-        // Pass the stream as a response without converting to a string
-        return new StreamingTextResponse(stream, {
-            async onChunk(chunk: string) {
-            // Compare diff on each chunk received (adjust logic as needed)
-            const diffs = dmp.diff_main(userInput, chunk);
-            dmp.diff_cleanupSemantic(diffs);
-            const diffHtml = dmp.diff_prettyHtml(diffs);
-    
-            // Optionally, log the diff for debugging
-            console.log("Diff HTML: ", diffHtml);
-            },
-        });
+        // 사용자 인풋 제일 마지막 메세지 Assuming the user input is the last message in the array
+        const userInput = messages[messages.length - 1].content;;
+
+        const stream = OpenAIStream(response);
+
+        // Pipe the OpenAI stream 
+        // 사용자 인풋과 diff를 핸들링하는 transform stream으로 연결
+        const transformedStream = stream.pipeThrough(transformStream);
+
+        return new StreamingTextResponse(transformedStream);
 
     } catch (error) {
         return new Response(JSON.stringify({ error: error.message }), { status: 500 });
