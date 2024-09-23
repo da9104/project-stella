@@ -1,7 +1,7 @@
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { Configuration, OpenAIApi } from "openai-edge";
 import { prisma } from '../db'
-import { NextRequest } from "next/server";
+// import { NextRequest } from "next/server";
 import DiffMatchPatch from 'diff-match-patch'
 
 const config = new Configuration({ 
@@ -11,7 +11,7 @@ const config = new Configuration({
 const openai = new OpenAIApi(config)
 const dmp = new DiffMatchPatch()
 
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
     try {
         const { messages } = await req.json()
     // message 형태 확인  Validate the message format
