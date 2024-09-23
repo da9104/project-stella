@@ -32,7 +32,7 @@ export default function Home() {
 
    // 엔터키 허용 Enter key press
    const handleKeyDown = useCallback(
-    (e) => {
+    (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
       if (e.key === 'Enter' && !e.shiftKey) {  // Ensure Enter is pressed without Shift for a new line
         e.preventDefault(); 
         handleSubmit(e);  
@@ -42,7 +42,7 @@ export default function Home() {
   );
 
   // Function to compute and set the diff
-  const computeDiff = (userInput, generatedText) => {
+  const computeDiff = (userInput: string, generatedText: string) => {
     const dmp = new DiffMatchPatch();
     const diffs = dmp.diff_main(userInput, generatedText);
     dmp.diff_cleanupSemantic(diffs);
