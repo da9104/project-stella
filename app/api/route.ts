@@ -37,11 +37,11 @@ export async function POST(req: Request) {
                 const diffHtml = dmp.diff_prettyHtml(diffs);
 
                 // log the diff for debugging
-                // console.log("Diff HTML: ", diffHtml);
+                console.log("Diff HTML: ", diffHtml);
 
                 controller.enqueue(chunk);
             },
-            flush(controller) {
+            flush() {
                 // DB 저장 Save the full completion to the database
                 prisma.message.create({
                     data: {
