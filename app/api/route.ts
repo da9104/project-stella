@@ -1,5 +1,6 @@
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { Configuration, OpenAIApi } from "openai-edge";
+import { prisma } from '../db'
 import DiffMatchPatch from 'diff-match-patch'
 
 const config = new Configuration({ 
@@ -9,7 +10,7 @@ const config = new Configuration({
 const openai = new OpenAIApi(config)
 const dmp = new DiffMatchPatch()
 
-export const runtime = "edge"
+// export const runtime = "edge"
 
 export async function POST(req: Request) {
     try {
@@ -24,7 +25,16 @@ export async function POST(req: Request) {
         stream: true, // stream the response
         messages: messages,
     })
-        const stream = OpenAIStream(response);
+        const stream = OpenAIStream(response, {
+            onCompletion: async (completion: string) => {
+                const data = await prisma.message.create({
+                    data: {
+                        answer: completion,
+                        question: messages.slice(-1)[0].content,
+                    },
+                });
+            }
+        });
         // Assuming the user input is the last message in the array
         const userInput = messages[messages.length - 1].content;
 

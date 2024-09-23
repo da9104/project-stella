@@ -71,7 +71,7 @@ export default function Home() {
          <div className="pb-32 pt-5 space-y-5 w-[75%] mx-auto relative "> 
            <div className="flex flex-row w-full">
              {/* Display the user message */}
-            <div className="flex flex-col w-[60%] space-y-4">
+            <div className="flex flex-col !w-1/2 space-y-4">
             {messages.map((message, index) => (
               <div key={message.id} className="w-full">
                {message.role === "user" ? (
@@ -95,9 +95,9 @@ export default function Home() {
             ))}
             </div>
           {/* Display the diff HTML */}
-          <div className="ml-5"> 
+          <div className="ml-5 w-1/2"> 
           {diffHtml && (
-            <div className="flex gap-x-2">
+            <div className="flex  gap-x-2">
              <div className="bg-orange-500 h-12 w-12 rounded-lg"> 
              <DropdownMenu>
                 <DropdownMenuTrigger>
