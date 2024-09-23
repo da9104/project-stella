@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     })
         const stream = OpenAIStream(response, {
             onCompletion: async (completion: string) => {
-                const _data = await prisma.message.create({
+              await prisma.message.create({
                     data: {
                         answer: completion,
                         question: messages.slice(-1)[0].content,

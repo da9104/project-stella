@@ -72,7 +72,7 @@ export default function Home() {
            <div className="flex flex-row w-full">
              {/* Display the user message */}
             <div className="flex flex-col !w-1/2 space-y-4">
-            {messages.map((message, _index) => (
+            {messages.map((message) => (
               <div key={message.id} className="w-full">
                {message.role === "user" ? (
                 <div className="flex gap-x-2">
