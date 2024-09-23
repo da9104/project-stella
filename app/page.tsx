@@ -1,4 +1,5 @@
 "use client"
+import { useCallback } from "react";
 import { useChat } from "ai/react";
 import Textarea from "react-textarea-autosize";
 
@@ -7,6 +8,17 @@ export default function Home() {
   const {messages, input, handleInputChange, handleSubmit} = useChat({
     api: '/api',
   })
+
+   // 엔터키 허용 Enter key press
+   const handleKeyDown = useCallback(
+    (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {  // Ensure Enter is pressed without Shift for a new line
+        e.preventDefault(); 
+        handleSubmit(e);  
+      }
+    },
+    [handleSubmit]
+  );
 
   return (
    <div className="min-h-screen bg-neutral-300 flex justify-center ">
@@ -19,7 +31,7 @@ export default function Home() {
                 {message.content}
                 </div>
                ) : (<div>
-                test
+                {message.content}
                 </div>)}
               </div>
             ))}
@@ -39,6 +51,7 @@ export default function Home() {
         rows={1}
         value={input}
         onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
         autoFocus
         placeholder="Type your message here..."
         className="w-full focus:outline-none shadow-teal-700 shadow-xl placeholder-gray-400 text-sm pr-16 text-gray-900 p-5 rounded-lg"
