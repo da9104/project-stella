@@ -132,8 +132,11 @@ export default function Home() {
     ) : (
       <div className="w-full flex justify-center pt-32">
         <h1 className="font-bold text-3xl">
-        ⬇️ Type your essay and get started ⬇️
+       Discover your smart writing checker   
+        <small> Write faster, write better. Our generative UI is your writing efficiency expert. </small>
         </h1>
+
+
       </div>
     )}
     
