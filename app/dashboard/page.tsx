@@ -1,6 +1,14 @@
-// app/dashboard/page.tsx (Server Component)
 import { neon } from '@neondatabase/serverless';
 import DashboardClient from '@/components/DashboardClient';
+
+// Define the Message type
+type Message = {
+  id: number;
+  question: string;
+  answer: string;
+  createdAt: string;
+};
+
 // Server-side data fetching
 async function getData() {
   if (!process.env.DATABASE_URL) {
@@ -11,10 +19,17 @@ async function getData() {
   return response;
 }
 
-// Server Component (No 'use client' here)
 export default async function Dashboard() {
   const data = await getData();
   
   // Pass data to Client Component
-  return <DashboardClient data={data} />;
+  // Map the data to the Message type
+  const messages: Message[] = data.map((item: Record<string, any>) => ({
+    id: item.id,
+    question: item.question,
+    answer: item.answer,
+    createdAt: item.createdAt,
+  }));
+
+  return <DashboardClient data={messages} />;
 }
