@@ -1,7 +1,6 @@
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { Configuration, OpenAIApi } from "openai-edge";
 import { prisma } from '../db'
-// import { NextRequest } from "next/server";
 import DiffMatchPatch from 'diff-match-patch'
 
 const config = new Configuration({ 
@@ -21,7 +20,7 @@ export async function POST(req: Request) {
 
     const response = await openai.createChatCompletion({ 
         model: "gpt-3.5-turbo", 
-        stream: true, // stream the response
+        stream: true, 
         messages: messages,
     })
 
@@ -36,7 +35,7 @@ export async function POST(req: Request) {
                 dmp.diff_cleanupSemantic(diffs);
                 const diffHtml = dmp.diff_prettyHtml(diffs);
 
-                // log the diff for debugging
+                 // log the diff for debugging
                  console.log("Diff HTML: ", diffHtml);
 
                  controller.enqueue(chunk);
