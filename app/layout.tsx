@@ -32,7 +32,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <main className="h-full">
-          <nav className="bg-neutral-300 flex justify-center">
+          <nav className="bg-transparent flex justify-center">
             <ul className="bg-transparent py-3 px-3 flex flex-row"> 
               <Image 
               src={LogoIcon}

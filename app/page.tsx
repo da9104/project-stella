@@ -66,7 +66,7 @@ export default function Home() {
 }, [messages]);
 
   return (
-   <div className="min-h-screen bg-neutral-300 flex justify-center">
+   <div className="min-h-screen bg-transparent flex justify-center">
     
     {messages.length !== 0 ? (
          <div className="pb-32 pt-5 space-y-5 w-[75%] mx-auto relative "> 
@@ -131,29 +131,28 @@ export default function Home() {
           <div ref={messagesEndRef} />
         </div>
     ) : (
-      <div className="flex flex-col justify-center pb-10 ">
-      
-        <div className="container mx-auto lg:h-screen flex flex-col justify-center items-center">
-          <h1 className="font-bold text-[3rem]"> Discover your {' '}
+      <div className="flex flex-col justify-center">
+        <div className="container mx-auto flex flex-col justify-center items-center px-8 sm:px-8 pb-40">
+          <h1 className="font-bold text-[3rem] leading-10 mb-4"> Discover your {' '}
             <strong className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">
               smart writing checker 
             </strong>
           </h1>
           <p>
-           Write faster, write better. Our
-           <code className="bg-gray-100 text-blue-800 p-1"> generative AI</code> 
-           is your writing efficiency expert. 
+           Write faster, write better. Our {''}
+           <code className="bg-gray-100 text-blue-800 p-1">generative AI</code> 
+           {''} is your writing efficiency expert. 
           </p>
           {/* <button className="bg-gray-100 text-blue-800 p-1">Google Sign In</button> */}
           <div className="w-full max-w-2xl grid grid-cols-1 lg:grid-cols-2 gap-4 my-8 px-4 lg:mx-0">
             <Link href="/" className="p-5 border rounded border-gray-200 hover:border-purple-400">
-            <h3>Google Sign In →</h3>
-            <p>Sign Up and save your writing checker</p>
+              <h3 className="pb-3">Google Sign In →</h3>
+              <p>Do you have an account? <br/>Save your writing checker</p>
             </Link>
             
             <a href="/" className="p-5 border rounded border-gray-200 hover:border-purple-400">
-            <h3>Check Your Previous Prompt →</h3>
-            <p>Don&apos;t miss out your previous writing.</p>
+              <h3 className="pb-3">Your Previous Prompt →</h3>
+              <p>Check your prompt <br/> Don&apos;t miss out your previous writing.</p>
             </a>
           </div>
        </div>
