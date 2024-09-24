@@ -25,6 +25,8 @@ export async function POST(req: Request) {
     })
 
     let fullCompletion = '';
+    let fullHtmlCompletion = '';
+
         // chunk & diff 핸들링 
         const transformStream = new TransformStream({
             transform(chunk, controller) {
@@ -35,17 +37,18 @@ export async function POST(req: Request) {
                 dmp.diff_cleanupSemantic(diffs);
                 const diffHtml = dmp.diff_prettyHtml(diffs);
 
+                fullHtmlCompletion += diffHtml
                  // log the diff for debugging
-                 console.log("Diff HTML: ", diffHtml);
+                 console.log("Diff HTML: ", diffHtml)
 
-                 controller.enqueue(chunk);
+                 controller.enqueue(chunk)
             },
             async flush() {
                try {
                   // DB 저장 Save the full completion to the database
                 await prisma.message.create({
                     data: {
-                        answer: fullCompletion,
+                        answer: fullHtmlCompletion,
                         question: userInput,
                     },
                 })
