@@ -146,17 +146,15 @@ export default function Home() {
           </p>
           {/* <button className="bg-gray-100 text-blue-800 p-1">Google Sign In</button> */}
           <div className="w-full max-w-2xl grid grid-cols-1 lg:grid-cols-2 gap-4 my-8 px-4 lg:mx-0">
-            <Link href="https://www.netlifycms.org/" className="p-5 border rounded border-gray-200 hover:border-purple-400">
+            <Link href="/" className="p-5 border rounded border-gray-200 hover:border-purple-400">
             <h3>Google Sign In →</h3>
             <p>Sign Up and save your writing checker</p>
             </Link>
             
-            <a href="https://www.11ty.dev/" target="_blank" className="p-5 border rounded border-gray-200 hover:border-purple-400">
+            <a href="/" className="p-5 border rounded border-gray-200 hover:border-purple-400">
             <h3>Check Your Previous Prompt →</h3>
-            <p>Don't miss out your previous writing.</p>
+            <p>Don&apos;t miss out your previous writing.</p>
             </a>
-            
-        
           </div>
        </div>
     </div>
