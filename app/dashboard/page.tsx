@@ -33,7 +33,8 @@ async function getData(): Promise<Message[]> {
   
   return data;
 }
-
+// revalidate = 0; force to fetch a fresh data from DB
+export const revalidate = 0;
 export default async function Dashboard() {
   const data = await getData();
   return <DashboardClient data={data} />;

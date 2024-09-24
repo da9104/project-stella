@@ -25,12 +25,14 @@ export default function DashboardClient({ data }: DashboardClientProps) {
                 <Accordion.Item value={`${item.id}`} className='px-6 py-6'>
                     <Accordion.Trigger className={styles.AccordionTrigger}>
                         <Accordion.Header className={styles.AccordionHeader}>
-                            Question: {item.question}{' '}
+                        {item.question.length > 15
+                        ? `${item.question.slice(0, 15)}...`
+                        : item.question }{' '}
                             <span> Time: {new Date(item.createdAt).toLocaleString()} </span>
                         </Accordion.Header>
                         <ChevronDownIcon className={styles.AccordionChevron} />
                     </Accordion.Trigger>
-                    <Accordion.Content>Answer: {item.answer}</Accordion.Content>
+                    <Accordion.Content>{item.answer}</Accordion.Content>
                 </Accordion.Item>
         </Accordion.Root> 
            
