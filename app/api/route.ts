@@ -35,10 +35,10 @@ export async function POST(req: Request) {
 
                 const diffs = dmp.diff_main(userInput, fullCompletion);
                 dmp.diff_cleanupSemantic(diffs);
-                // const diffHtml = dmp.diff_prettyHtml(diffs);
+                const diffHtml = dmp.diff_prettyHtml(diffs);
 
-                //  log the diff for debugging
-                //  console.log("Diff HTML: ", diffHtml);
+                // log the diff for debugging
+                 console.log("Diff HTML: ", diffHtml);
 
                 controller.enqueue(chunk);
             },
