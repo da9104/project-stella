@@ -1,6 +1,7 @@
 "use client"
 import { useCallback, useEffect, useState, useRef } from "react";
 import { useChat } from "ai/react";
+import Link from 'next/link'
 import Textarea from "react-textarea-autosize";
 import DiffMatchPatch from 'diff-match-patch';
 import {
@@ -130,14 +131,33 @@ export default function Home() {
           <div ref={messagesEndRef} />
         </div>
     ) : (
-      <div className="w-full flex justify-center pt-32">
-        <h1 className="font-bold text-3xl">
-       Discover your smart writing checker   
-        <small> Write faster, write better. Our generative UI is your writing efficiency expert. </small>
-        </h1>
-
-
-      </div>
+      <div className="flex flex-col justify-center pb-10 ">
+      
+        <div className="container mx-auto lg:h-screen flex flex-col justify-center items-center">
+          <h1 className="font-bold text-[3rem]"> Discover your {' '}
+            <strong className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">
+              smart writing checker 
+            </strong>
+          </h1>
+          <p>
+           Write faster, write better. Our  <code className="bg-gray-100 text-blue-800 p-1"> generative AI</code> is your writing efficiency expert. 
+          </p>
+          {/* <button className="bg-gray-100 text-blue-800 p-1">Google Sign In</button> */}
+          <div className="w-full max-w-2xl grid grid-cols-1 lg:grid-cols-2 gap-4 my-8 px-4 lg:mx-0">
+            <Link href="https://www.netlifycms.org/" className="p-5 border rounded border-gray-200 hover:border-purple-400">
+            <h3>Google Sign In →</h3>
+            <p>Open source content management for your Git workflow</p>
+            </Link>
+            
+            <a href="https://www.11ty.dev/" target="_blank" class="p-5 border rounded border-gray-200 hover:border-purple-400">
+            <h3>Check Your Previous Prompt →</h3>
+            <p>Eleventy is a simpler static site generator.</p>
+            </a>
+            
+        
+          </div>
+       </div>
+    </div>
     )}
     
     {/* 메시지 입력창 Message input */} 
@@ -154,7 +174,7 @@ export default function Home() {
         placeholder="Type your message here..."
         className="w-full focus:outline-none shadow-orange-200 shadow-xl placeholder-gray-400 text-sm pr-16 text-gray-900 p-5 rounded-lg"
         />
-            <button type="submit" className="absolute bg-orange-400 p-2 rounded-lg right-0 mr-5 text-white">
+            <button type="submit" className="absolute bg-orange-400 p-2 px-6 rounded-lg right-0 mr-5 text-white">
               첨삭
             </button>
       </div>
