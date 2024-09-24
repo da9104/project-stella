@@ -41,7 +41,7 @@ export async function POST(req: Request) {
 
                  controller.enqueue(chunk);
             },
-            async flush(controller) {
+            async flush() {
                try {
                   // DB 저장 Save the full completion to the database
                 await prisma.message.create({
