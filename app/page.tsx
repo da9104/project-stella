@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 export default function Home() {
-  const {messages, input, handleInputChange, handleSubmit} = useChat({
+  const {messages, input, handleInputChange, handleSubmit, isLoading} = useChat({
     api: '/api',
   })
     // State to hold the diff HTML
@@ -161,6 +161,20 @@ export default function Home() {
     
     {/* 메시지 입력창 Message input */} 
     <form onSubmit={handleSubmit} className=" bg-transparents p-5 fixed bottom-0 w-[75%]">
+
+    {isLoading && (
+        <div className="grid mt-4 text-gray-500 justify-center self-center place-items-center place-content-center">
+          <div>Loading...</div>
+          <button
+            type="button"
+            className="px-4 py-2 mt-4 text-blue-500 border border-blue-500 rounded-md"
+            onClick={stop}
+          >
+            Stop
+          </button>
+        </div>
+      )}
+
       <div className="relative flex items-center">
         <Textarea 
         tabIndex={0}

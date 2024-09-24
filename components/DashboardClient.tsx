@@ -1,8 +1,11 @@
 "use client";
+import React from 'react';
 import * as Accordion from '@radix-ui/react-accordion';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { useEffect, useState } from 'react';
 import styles from './styles.module.scss';
+import Link from 'next/link';
+
 
 interface Message {
   id: number;
@@ -12,7 +15,9 @@ interface Message {
 }
 
 interface DashboardClientProps {
-  data: Message[];
+  messages: Message[];
+  totalCount: number;
+  currentPage: number;
 }
 
 function cleanHtml(htmlString: string): string {
@@ -44,8 +49,11 @@ function cleanHtml(htmlString: string): string {
   }
 }
 
-export default function DashboardClient({ data }: DashboardClientProps) {
+const DashboardClient: React.FC<DashboardClientProps> = ({ messages, totalCount, currentPage }) => {
   const [isMounted, setIsMounted] = useState(false);
+  const pageSize = 50;
+  const totalPages = Math.ceil(totalCount / pageSize);
+
 
   useEffect(() => {
     setIsMounted(true);
@@ -59,8 +67,8 @@ export default function DashboardClient({ data }: DashboardClientProps) {
     <div className={styles.container}>
       <div className="flex flex-col gap-5 w-full justify-center items-center content-center">
         <div className='w-[65%]'>
-          {data.length > 0 ? (
-            data.map((item) => (
+          {messages.length > 0 ? (
+            messages.map((item) => (
               <Accordion.Root type="multiple" key={item.id} className="border-2 rounded mb-5 hover:border-purple-300">
                 <Accordion.Item value={`${item.id}`} className='px-6 py-6'>
                   <Accordion.Trigger className={styles.AccordionTrigger}>
@@ -83,8 +91,26 @@ export default function DashboardClient({ data }: DashboardClientProps) {
           ) : (
             <p>No data found.</p>
           )}
+
+      <div>
+        {currentPage > 1 && (
+          <Link href={`/dashboard?page=${currentPage - 1}`}>
+            Previous
+          </Link>
+        )}
+        {currentPage < totalPages && (
+          <Link href={`/dashboard?page=${currentPage + 1}`}>
+            Next
+          </Link>
+        )}
+      </div>
+      
+      <p>Page {currentPage} of {totalPages}</p>
+
         </div>
       </div>
     </div>
   );
 }
+
+export default DashboardClient;

@@ -10,9 +10,11 @@ const config = new Configuration({
 const openai = new OpenAIApi(config)
 const dmp = new DiffMatchPatch()
 
+export const maxDuration = 30;
+
 export async function POST(req: Request) {
     try {
-        const { messages } = await req.json()
+    const { messages } = await req.json()
     // message 형태 확인  Validate the message format
     if (!Array.isArray(messages) || messages.length === 0) {
         return new Response(JSON.stringify({ error: 'Invalid message format' }), { status: 400 });
@@ -22,6 +24,7 @@ export async function POST(req: Request) {
         model: "gpt-3.5-turbo", 
         stream: true, 
         messages: messages,
+        // system: 'You are a helpful assistant for writing an essay.',
     })
 
     let fullCompletion = '';
