@@ -5,25 +5,19 @@ import ws from 'ws';
 
 neonConfig.webSocketConstructor = ws;
 const connectionString = process.env.DATABASE_URL || '';
+if (!connectionString) {
+    throw new Error('DATABASE_URL is not set');
+  }
+
 const pool = new Pool({ connectionString });
 const adapter = new PrismaNeon(pool);
 
-// const globalForPrisma = global as unknown as {
-//      prisma: PrismaClient | undefined
-// }
-// export const prisma = globalForPrisma.prisma ?? new PrismaClient()
-
-export const prisma =  new PrismaClient({ 
-    adapter 
-});
-
-declare global {
-    var prisma: PrismaClient | undefined;
+const globalForPrisma = global as unknown as {
+     prisma: PrismaClient | undefined
 }
+export const prisma = globalForPrisma.prisma ?? new PrismaClient({adapter})
 
 if (process.env.NODE_ENV !== 'production') {
-    if (!global.prisma) {
-        global.prisma = prisma;
-    }
+    globalForPrisma.prisma = prisma
 }
 
