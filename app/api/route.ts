@@ -26,7 +26,6 @@ export async function POST(req: Request) {
     })
 
     let fullCompletion = '';
-
         // chunk & diff 핸들링 
         const transformStream = new TransformStream({
             transform(chunk, controller) {
@@ -40,22 +39,26 @@ export async function POST(req: Request) {
                 // log the diff for debugging
                  console.log("Diff HTML: ", diffHtml);
 
-                controller.enqueue(chunk);
+                 controller.enqueue(chunk);
             },
-            flush() {
-                // DB 저장 Save the full completion to the database
-                prisma.message.create({
+            async flush(controller) {
+               try {
+                  // DB 저장 Save the full completion to the database
+                await prisma.message.create({
                     data: {
                         answer: fullCompletion,
                         question: userInput,
                     },
-                }).catch(error => console.error('Error saving to database:', error));
+                })
+                console.log('Successfully saved to database')
+               } catch (error) {
+                   console.error('Error flushing transform stream:', error);
+                } 
             }
         });
 
         // 사용자 인풋 제일 마지막 메세지 Assuming the user input is the last message in the array
         const userInput = messages[messages.length - 1].content;;
-
         const stream = OpenAIStream(response);
 
         // Pipe the OpenAI stream 
