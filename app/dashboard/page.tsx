@@ -8,7 +8,7 @@ interface Message {
   createdAt: string;
 }
 
-const MAX_TEXT_LENGTH = 1000;
+const MAX_TEXT_LENGTH = 2000;
 function truncateText(text: string, maxLength: number): string {
   if (text.length <= maxLength) return text;
   return text.slice(0, maxLength) + '...';

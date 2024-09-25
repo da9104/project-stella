@@ -51,7 +51,7 @@ function cleanHtml(htmlString: string): string {
 
 const DashboardClient: React.FC<DashboardClientProps> = ({ messages, totalCount, currentPage }) => {
   const [isMounted, setIsMounted] = useState(false);
-  const pageSize = 50;
+  const pageSize = 10;
   const totalPages = Math.ceil(totalCount / pageSize);
 
 
