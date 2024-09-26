@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 import styles from './styles.module.scss';
 import Link from 'next/link';
 
-
 interface Message {
   id: number;
   question: string;

@@ -1,3 +1,4 @@
+"use client"
 import { FC, ReactNode, useState } from 'react'
 import { signIn } from 'next-auth/react'
 

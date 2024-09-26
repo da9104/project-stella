@@ -4,7 +4,7 @@ import { JWT } from "next-auth/jwt"
 import { Session } from "next-auth"
 import GoogleProvider from 'next-auth/providers/google'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import { compare } from 'bcrypt'
+// import { compare } from 'bcrypt'
 import { prisma as db} from './db'
 
 export const authOptions: NextAuthOptions = {
@@ -39,12 +39,12 @@ export const authOptions: NextAuthOptions = {
                 return null
             }
 
-            if(existingUser.password) {
-                const passwordMatch = await compare(credentials.password, existingUser.password)
-                if(!passwordMatch) {
-                    return null
-                }
-            }
+            // if(existingUser.password) {
+            //     const passwordMatch = await compare(credentials.password, existingUser.password)
+            //     if(!passwordMatch) {
+            //         return null
+            //     }
+            // }
 
             return {
                 id: `${existingUser.id}`,
