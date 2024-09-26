@@ -100,7 +100,7 @@ const Chat: React.FC<ChatProps> = ({ session }) => {
                   className="w-full h-full p-2 self-center text-white">
                     <path fillRule="evenodd" d="M10.497 3.744a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-3.275l-5.357 15.002h2.632a.75.75 0 1 1 0 1.5h-7.5a.75.75 0 1 1 0-1.5h3.275l5.357-15.002h-2.632a.75.75 0 0 1-.75-.75Z" clipRule="evenodd" />
                   </svg>
-                </div>
+                 </div>
                     <p className="rounded-lg p-3 w-full border-gray-400 border-2 text-sm">
                     {message.content}
                     </p>
@@ -181,7 +181,7 @@ const Chat: React.FC<ChatProps> = ({ session }) => {
                 ) }
             </Link>
             
-            <Link href="/dashboard" className="p-5 border rounded border-gray-200 hover:border-purple-400">
+            <Link href={ session ? "/dashboard" : "#" } className="p-5 border rounded border-gray-200 hover:border-purple-400">
               { session? (
                 <>
                  <h3 className="pb-3">Check Your Saved Prompt →</h3>
