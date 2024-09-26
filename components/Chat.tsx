@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState, useRef } from "react";
 import { useChat } from "ai/react";
 import Link from 'next/link'
 import Textarea from "react-textarea-autosize";
+import { signOut } from "next-auth/react"
 import DiffMatchPatch from 'diff-match-patch';
 import {
   DropdownMenu,
@@ -161,7 +162,7 @@ const Chat: React.FC<ChatProps> = ({ session }) => {
             <Link href={ session ? "/dashboard/admin" : "#" } className="group/item p-5 border rounded border-gray-200 hover:border-purple-400">
              { session? (
                 <>
-                 <h3 className="pb-3">Dashboard →</h3>
+                 <h3 className="pb-3">Welcome, {session.user.username || session.user.name}</h3>
                 </>
              ) 
              : ( 
@@ -170,7 +171,14 @@ const Chat: React.FC<ChatProps> = ({ session }) => {
                     <p className="pb-3">Save your writing checker</p>
                 </>
              ) }
-             { session? ( <p className="leading-10"> Welcome, {session.user.username || session.user.name} </p>) :( <GoogleSignInButton className="group-hover/item:bg-purple-400"> Google Sign In</GoogleSignInButton>) }
+             { session? 
+                ( 
+                <button 
+                onClick={() => signOut({ callbackUrl: '/' })} 
+                className="w-full px-4 py-2 text-sm font-medium text-white bg-orange-500 rounded-md group-hover/item:bg-purple-400"> Logout </button>
+                ) : ( 
+                <GoogleSignInButton className="group-hover/item:bg-purple-400"> Google Sign In</GoogleSignInButton>
+                ) }
             </Link>
             
             <Link href="/dashboard" className="p-5 border rounded border-gray-200 hover:border-purple-400">

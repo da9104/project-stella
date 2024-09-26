@@ -1,15 +1,34 @@
 import { authOptions } from "@/lib/auth"
+// import { getSession } from "next-auth/react"
 import { getServerSession } from "next-auth"
+import Chat from "@/components/Chat"
 import Link from "next/link"
 import Image from "next/image"
 import { FC } from "react"
-import Chat from "@/components/Chat"
 
  const Admin: FC = async () => {
-    const session = await getServerSession(authOptions)
-    console.log(session?.user, 'from admin page')
+  let session
 
-    if (session?.user) {
+  try {
+    session = await getServerSession(authOptions)
+    console.log("Session from admin page:", session)
+  } catch (error) {
+    console.error("Error getting server session:", error)
+    return <div>Error: Unable to authenticate</div>
+  }
+
+  if (!session) {
+    console.log("No session found")
+    return <div>Access Denied</div>
+  }
+
+  if (!session.user) {
+    console.log("Session has no user object")
+    return <div>Invalid Session</div>
+  }
+
+
+    if (session) {
      return (
         <div>
          <div className="flex flex-col justify-center content-center items-center">

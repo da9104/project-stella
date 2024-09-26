@@ -26,7 +26,7 @@ const GoogleSignInButton: FC<GoogleSignInButtonProps> = ({ children, className }
         <button 
         disabled={isLoading}
         onClick={loginWithGoogle} 
-        className={`inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-orange-500 rounded-md hover:bg-purple-400 ${className}`}
+        className={`inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-orange-500 rounded-md ${className}`}
         >
             {isLoading && (
                 <svg

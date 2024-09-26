@@ -6,7 +6,7 @@ generator client {
 datasource db {
   provider     = "postgresql"
   url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  // relationMode = "prisma"
 }
 
 model Message {
@@ -48,10 +48,14 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
+  verificationToken    VerificationToken?  @relation(fields: [verificationTokenId], references: [token], name: "VerificationToken_Session")
+  verificationTokenId  String?             // Foreign key to VerificationToken (optional)
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([sessionToken], map: "sessionToken_idx")
+  @@index([userId], map: "userId_idx")
 }
 
 model User {
@@ -71,8 +75,9 @@ model User {
 
 model VerificationToken {
   identifier String
-  token      String
+  token      String    @id @default(uuid()) @unique
   expires    DateTime
- 
+  sessions   Session[] @relation(name: "VerificationToken_Session")
+
   @@unique([identifier, token])
 }
