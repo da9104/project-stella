@@ -56,15 +56,14 @@ model Session {
 
 model User {
   id        String       @id @default(uuid())
-  username  String?   @unique
-  password  String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  name      String    @unique
-  email     String?   @unique
+  name      String       @unique
+  email     String?      @unique
   emailVerified DateTime?
-
-  // Relations
+  image     String? 
+  username  String?      @unique
+  password  String?
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
   accounts  Account[]
   sessions  Session[]
   messages  Message[]   
