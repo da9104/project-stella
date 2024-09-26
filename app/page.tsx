@@ -71,7 +71,7 @@ export default function Home() {
   }
 }, [messages]);
 
-  const isKorean = (text) => /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(text);
+  const isKorean = (text: string): boolean => /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(text);
 
   return (
    <div className="min-h-screen bg-transparent flex justify-center">
@@ -153,7 +153,7 @@ export default function Home() {
           </p>
           {/* <button className="bg-gray-100 text-blue-800 p-1">Google Sign In</button> */}
           <div className="w-full max-w-2xl grid grid-cols-1 lg:grid-cols-2 gap-4 my-8 px-4 lg:mx-0">
-            <Link href="/" className="group/item p-5 border rounded border-gray-200 hover:border-purple-400">
+            <Link href="#" className="group/item p-5 border rounded border-gray-200 hover:border-purple-400">
               <h3 className="pb-3">Join and Start Today →</h3>
               <p className="pb-3">Save your writing checker</p>
               <GoogleSignInButton className="group-hover/item:bg-purple-400"> Google Sign In</GoogleSignInButton> 

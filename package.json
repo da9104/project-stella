@@ -26,7 +26,7 @@
     "dotenv": "^16.4.5",
     "lucide-react": "^0.445.0",
     "next": "14.2.13",
-    "next-auth": "^4.24.7",
+    "next-auth": "^4.24.8",
     "openai-edge": "^1.2.2",
     "pg": "^8.13.0",
     "react": "^18",
@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "@prisma/client": "^5.20.0",
+    "@types/bcrypt": "^5.0.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

@@ -10,7 +10,7 @@ import Link from "next/link"
      return (
         <div>
             <h1>Admin Dashboard</h1>
-            <p>Welcome, {session.user.username}</p>
+            <p>Welcome, {session.user.username || session.user.name}</p>
         </div>
      )
     } 

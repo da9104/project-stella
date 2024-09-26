@@ -1,19 +1,20 @@
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import { JWT } from "next-auth/jwt"
+import { Session } from "next-auth"
 import GoogleProvider from 'next-auth/providers/google'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { compare } from 'bcrypt'
-import Google from 'next-auth/providers/google'
 import { prisma as db} from './db'
 
 export const authOptions: NextAuthOptions = {
     adapter: PrismaAdapter(db),
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.AUTH_SECRET,
     session: {
         strategy: 'jwt',
     },
     pages: {
-        signIn: '/api/auth',
+        signIn: '/auth/signin',
     },
     providers: [
         GoogleProvider({
@@ -54,11 +55,11 @@ export const authOptions: NextAuthOptions = {
     })
     ],
     callbacks: {
-        async jwt({ token, user }) {
-            if (user) {
-                token.username = user.username;
-            }
-            return token;
-        }
-  }
+        async session({ session, token }: { session: Session; token: JWT }) {
+          if (session.user) {
+            session.user.username = token.username as string;
+          }
+          return session;
+        },
+      }
 }
