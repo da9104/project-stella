@@ -1,6 +1,6 @@
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { Configuration, OpenAIApi } from "openai-edge";
-import { prisma } from '../db'
+import { prisma } from '../../lib/db'
 import DiffMatchPatch from 'diff-match-patch'
 
 const config = new Configuration({ 
@@ -23,8 +23,11 @@ export async function POST(req: Request) {
     const response = await openai.createChatCompletion({ 
         model: "gpt-3.5-turbo", 
         stream: true, 
-        messages: messages,
-        // system: 'You are a helpful assistant for writing an essay.',
+        // messages: [
+        // {   role: 'system', content: 'You are helping and checking essays and refining them.' },
+        //     ...messages,
+        // ]
+        messages: messages
     })
 
     let fullCompletion = '';
@@ -40,7 +43,7 @@ export async function POST(req: Request) {
                 dmp.diff_cleanupSemantic(diffs);
                 const diffHtml = dmp.diff_prettyHtml(diffs);
 
-                fullHtmlCompletion += diffHtml
+                 fullHtmlCompletion += diffHtml
                  // log the diff for debugging
                  console.log("Diff HTML: ", diffHtml)
 

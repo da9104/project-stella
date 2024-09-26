@@ -2,10 +2,9 @@ import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
-// import { PrismaClient } from '@prisma/client'
-import { db } from '@/lib/db'
 import { compare } from 'bcrypt'
 import Google from 'next-auth/providers/google'
+import { prisma as db} from './db'
 
 export const authOptions: NextAuthOptions = {
     adapter: PrismaAdapter(db),
@@ -14,7 +13,7 @@ export const authOptions: NextAuthOptions = {
         strategy: 'jwt',
     },
     pages: {
-        signIn: '/sign-in',
+        signIn: '/api/auth',
     },
     providers: [
         GoogleProvider({
@@ -35,5 +34,31 @@ export const authOptions: NextAuthOptions = {
             const existingUser = await db.user.findUnique({
                 where: { email: credentials?.email }
             })
-        )
-    ]
+            if (!existingUser) {
+                return null
+            }
+
+            if(existingUser.password) {
+                const passwordMatch = await compare(credentials.password, existingUser.password)
+                if(!passwordMatch) {
+                    return null
+                }
+            }
+
+            return {
+                id: `${existingUser.id}`,
+                username: existingUser.username,
+                email: existingUser.email
+            }
+        }
+    })
+    ],
+    callbacks: {
+        async jwt({ token, user }) {
+            if (user) {
+                token.username = user.username;
+            }
+            return token;
+        }
+  }
+}

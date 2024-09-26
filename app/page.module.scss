@@ -1,0 +1,35 @@
+
+/* user message div */
+
+/* .user-message:nth-of-type() {
+  display: none;
+} */
+
+.korean-text p:not(:first-child) {
+  display: none;
+} 
+
+/* .korean-text p:last-of-type {
+  display: none;
+} */
+
+.korean-text > p:last-child {
+    display: none;
+  }
+  
+  /* userInput diff-output  */
+  
+  /* .diff-output {
+    background-color: #eee;
+  } */
+  .diff-output span:nth-last-child(1) {
+   display: none;
+  }
+  
+  .diff-output span {
+    display: none;
+  }
+  
+  .diff-output {
+    word-break: break-word;
+  }

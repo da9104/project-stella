@@ -12,6 +12,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import './page.module.scss'
+import GoogleSignInButton from "@/components/ui/GoogleSignInButton";
 
 export default function Home() {
   const {messages, input, handleInputChange, handleSubmit, isLoading} = useChat({
@@ -19,8 +21,7 @@ export default function Home() {
   })
     // State to hold the diff HTML
     const [diffHtml, setDiffHtml] = useState("");
-
-   // 자동 스크롤링 auto scrolling
+    // 자동 스크롤링 auto scrolling
     const messagesEndRef = useRef<HTMLInputElement>(null)
 
     const scrollToBottom = () => {
@@ -53,17 +54,24 @@ export default function Home() {
  // Effect to compute the diff when the latest message pair (user and bot) changes
  useEffect(() => {
   if (messages.length >= 2) {
-    const lastMessage = messages[messages.length - 1];
     const secondLastMessage = messages[messages.length - 2];
-    // Only compute diff when comparing a user message to a bot message
+    const lastMessage = messages[messages.length - 1];
+    
     if (lastMessage.role === 'assistant' && secondLastMessage.role === 'user') {
       const userInput = secondLastMessage.content;  // User message
+      
+      console.log(userInput)
+
       const generatedText = lastMessage.content;    // AI-generated message
       const diff = computeDiff(userInput, generatedText);
-      setDiffHtml(diff);  // Set the diff HTML
+     
+      console.log("Diff HTML: ", diff)
+      setDiffHtml(diff);  
     }
   }
 }, [messages]);
+
+  const isKorean = (text) => /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(text);
 
   return (
    <div className="min-h-screen bg-transparent flex justify-center">
@@ -76,7 +84,7 @@ export default function Home() {
             {messages.map((message) => (
               <div key={message.id} className="w-full">
                {message.role === "user" ? (
-                <div className="flex gap-x-2">
+                <div className={`flex gap-x-2 user-message ${isKorean(message.content) ? 'korean-text' : ''}`}>
                 {/* 유저 아이콘 Heroicons user icon */}
                 <div className="bg-gray-500 h-12 w-12 rounded-lg">
                   <svg 
@@ -145,14 +153,16 @@ export default function Home() {
           </p>
           {/* <button className="bg-gray-100 text-blue-800 p-1">Google Sign In</button> */}
           <div className="w-full max-w-2xl grid grid-cols-1 lg:grid-cols-2 gap-4 my-8 px-4 lg:mx-0">
-            <Link href="/" className="p-5 border rounded border-gray-200 hover:border-purple-400">
-              <h3 className="pb-3">Google Sign In →</h3>
-              <p>Do you have an account? <br/>Save your writing checker</p>
+            <Link href="/" className="group/item p-5 border rounded border-gray-200 hover:border-purple-400">
+              <h3 className="pb-3">Join and Start Today →</h3>
+              <p className="pb-3">Save your writing checker</p>
+              <GoogleSignInButton className="group-hover/item:bg-purple-400"> Google Sign In</GoogleSignInButton> 
             </Link>
             
             <Link href="/dashboard" className="p-5 border rounded border-gray-200 hover:border-purple-400">
               <h3 className="pb-3">Your Previous Prompt →</h3>
-              <p>Check your prompt <br/> Don&apos;t miss out your previous writing.</p>
+              <p className="leading-10"> Check your last prompt</p>
+              <p> Don&apos;t miss out your previous writing.</p>
             </Link>
           </div>
        </div>

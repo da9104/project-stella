@@ -92,20 +92,23 @@ const DashboardClient: React.FC<DashboardClientProps> = ({ messages, totalCount,
             <p>No data found.</p>
           )}
 
-      <div>
+      <div className='flex justify-center mb-10'>
         {currentPage > 1 && (
-          <Link href={`/dashboard?page=${currentPage - 1}`}>
+          <Link href={`/dashboard?page=${currentPage - 1}`}
+          className='rounded border-2 px-3 py-3 mr-3'
+          >
             Previous
           </Link>
         )}
         {currentPage < totalPages && (
-          <Link href={`/dashboard?page=${currentPage + 1}`}>
+          <Link href={`/dashboard?page=${currentPage + 1}`}
+          className='rounded border-2 px-6 py-3 mr-3'>
             Next
           </Link>
         )}
       </div>
       
-      <p>Page {currentPage} of {totalPages}</p>
+       {/* <p>Page {currentPage}</p> */}
 
         </div>
       </div>
