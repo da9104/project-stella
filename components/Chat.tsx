@@ -191,7 +191,7 @@ const Chat: React.FC<ChatProps> = ({ session }) => {
               ) : (
                 <>
                 <h3 className="pb-3">Your Previous Prompt →</h3>
-                <p className="leading-10"> Check your last prompt</p>
+                <p className="leading-10"> Sign up and start today.</p>
                 <p> Don&apos;t miss out your previous writing.</p>
                 </>
                )
@@ -226,15 +226,18 @@ const Chat: React.FC<ChatProps> = ({ session }) => {
         value={input}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
+        disabled={!session} 
         // autoFocus
-        placeholder="Type your message here..."
+        placeholder={session? "Type your message here..." : "Sign in to start chatting..."}
         className="w-full focus:outline-none shadow-orange-200 shadow-xl placeholder-gray-400 text-sm pr-16 text-gray-900 p-5 rounded-lg"
         />
             <button type="submit" className="absolute bg-orange-400 p-2 px-6 rounded-lg right-0 mr-5 text-white">
               첨삭
             </button>
       </div>
-      <p className="z-50 pt-3 text-center text-sm"> Press Shift+Enter for a new line.</p>
+      <p className="z-50 pt-3 text-center text-sm">
+      { session? 'Press Shift+Enter for a new line.' : '(C) 2024 CheckYourWriting made with love' }
+      </p>
     </form>
    </div>
   );

@@ -1,5 +1,4 @@
 import { authOptions } from "@/lib/auth"
-// import { getSession } from "next-auth/react"
 import { getServerSession } from "next-auth"
 import Chat from "@/components/Chat"
 import Link from "next/link"
@@ -31,16 +30,16 @@ import { FC } from "react"
     if (session) {
      return (
         <div>
-         <div className="flex flex-col justify-center content-center items-center">
+         {/* <div className="flex flex-row justify-center content-center items-center">
             <Image 
-            width={100}
-            height={100}
+            width={30}
+            height={30}
             src={session.user.image || '/default-image.png'}
             alt={session.user.username || session.user.name || 'User'} 
-            className="rounded-full"
+            className="rounded-full mr-3"
             />
             <p>Welcome, {session.user.username || session.user.name}</p>
-        </div>
+        </div> */}
         
            <Chat session={session} />
         </div>

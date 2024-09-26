@@ -7,14 +7,11 @@ import './page.module.scss'
 export default async function Home() {
   const session: Session | null = await getServerSession(authOptions)
  
-  // if (!session) {
-  //   return (
-  //     <div>
-  //       <p>You need to be logged in to access this feature.</p>
-  //       {/* You can add a sign-in button here */}
-  //     </div>
-  //   );
-  // }
+  if (!session) {
+    return (
+      <Chat session={session} />
+    );
+  }
 
   if (session) {
     console.log(session.user, 'From Home page'); 
@@ -22,7 +19,7 @@ export default async function Home() {
 
   return (
    <div>
-    { session && <h1 className="text-center hidden"> Welcome, {session.user.username || session.user.name}</h1>}
+    { session && <h1 className="text-center hidden"> Welcome, {session.user.username || session.user.name}</h1> }
      <Chat session={session} />
    </div>
   );
