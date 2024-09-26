@@ -73,40 +73,52 @@ export const authOptions: NextAuthOptions = {
         },
         async signIn({ user, account }) {
             if (!user.email) {
-                throw new Error('Email is required for sign in');
-              }
-
-            const existingUser = await db.user.findUnique({
-              where: { email: user.email! }
-            });
-                if (existingUser) {
-                    if (account) {
-                        const existingAccount = await db.account.findFirst({
-                        where: { userId: existingUser.id, provider: account.provider }
-                        });
-
-                if (!existingAccount && account) {
-                    await db.account.create({
-                      data: {
-                        userId: existingUser.id,
-                        provider: account.provider,
-                        providerAccountId: account.providerAccountId,
-                        access_token: account.access_token,
-                        refresh_token: account.refresh_token,
-                        expires_at: account.expires_at,
-                        type: "oauth" // or the appropriate type value
-                      }
-                    });
-                  }
+                console.error('Email is required for sign in');
+                return false;
             }
-            return true;  // Allow sign-in
-        }
-            return false; // Deny sign-in if user does not exist
-      }
+        
+            let dbUser = await db.user.findUnique({
+                where: { email: user.email },
+            });
+        
+            if (!dbUser) {
+                // Create a new user if one doesn't exist
+                dbUser = await db.user.create({
+                    data: {
+                        email: user.email,
+                        name: user.name || '',
+                        image: user.image || '',
+                        // Generate a username based on the email or name
+                        username: user.name?.replace(/\s+/g, '').toLowerCase() || user.email.split('@')[0],
+                    },
+                });
+            }
+        
+            if (account) {
+                const existingAccount = await db.account.findFirst({
+                    where: { userId: dbUser.id, provider: account.provider },
+                });
+        
+                if (!existingAccount) {
+                    await db.account.create({
+                        data: {
+                            userId: dbUser.id,
+                            provider: account.provider,
+                            providerAccountId: account.providerAccountId,
+                            access_token: account.access_token || '',
+                            refresh_token: account.refresh_token || '',
+                            expires_at: account.expires_at,
+                            type: account.type || "oauth",
+                        },
+                    });
+                }
+            }
+            return true; // Allow sign-in
+        },
     },
-        events: {
-            async createUser({ user }) {
-                console.log("New user created:", user);
-            },  
-        }
+    events: {
+        async createUser({ user }) {
+            console.log("New user created:", user);
+        },
+    },
 }
