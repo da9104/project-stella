@@ -2,7 +2,6 @@ import { authOptions } from "@/lib/auth"
 import { getServerSession } from "next-auth"
 import Chat from "@/components/Chat"
 import Link from "next/link"
-import Image from "next/image"
 import { FC } from "react"
 
  const Admin: FC = async () => {
