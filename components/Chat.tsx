@@ -1,23 +1,12 @@
 "use client"
-import { useCallback, useEffect, useState, useRef } from "react";
-import { useCompletion } from "@ai-sdk/react";
+import { useState, useRef } from "react";
 import Link from 'next/link'
 import Textarea from "react-textarea-autosize";
 import { signOut } from "next-auth/react"
-import DiffMatchPatch from 'diff-match-patch';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-
 import GoogleSignInButton from "@/components/ui/GoogleSignInButton";
 import { Session } from "next-auth";
 import { toast } from "sonner"
-import { RefreshCw, Sparkles } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import { DiffViewer } from "./diff-viewer";
 
 interface ChatProps {
