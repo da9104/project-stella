@@ -85,10 +85,12 @@ const Chat: React.FC<ChatProps> = ({ session }) => {
         <div className="pb-32 pt-5 space-y-5 w-[75%] mx-auto relative ">
           <div className="flex flex-row w-full">
             {/* Display the user message */}
-            <div className="flex flex-col !w-1/2 space-y-4">
+            <div className="flex flex-col !w-1/2 space-y-4 p-5 leading-loose">
                 {originalPrompt}
             </div>
-            
+            <div className="flex flex-col !w-1/2 space-y-4 p-5 leading-loose text-green-800 ">
+                {improvedPrompt}
+            </div>
             </div>
           
             {/* Diff Viewer */}
