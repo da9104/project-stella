@@ -4,6 +4,7 @@ import "./globals.css";
 import Image from "next/image";
 import LogoIcon from "./logo.svg";
 import Link from "next/link";
+import { Toaster } from "@/components/ui/sonner"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,6 +32,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Toaster />
         <main className="h-full">
           <nav className="bg-transparent flex justify-center">
             <ul className="bg-transparent py-3 px-3 flex flex-row"> 
