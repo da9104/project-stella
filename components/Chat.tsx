@@ -76,7 +76,7 @@ const Chat: React.FC<ChatProps> = ({ session }) => {
   //   [handleImprove]
   // );
 
-  const isKorean = (text: string): boolean => /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(text);
+  // const isKorean = (text: string): boolean => /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(text);
 
   return (
     <div className="min-h-screen bg-transparent flex flex-col justify-center">
