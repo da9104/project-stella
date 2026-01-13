@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
          return NextResponse.json({ error: 'User not authenticated' }, { status: 401 });
      }
 
-    const { text } = await client.models.generateContent({
+    const generationResult = await client.models.generateContent({
         model: "gemini-2.5-flash",
         config: {
             systemInstruction: SYSTEM_PROMPT,
@@ -36,15 +36,23 @@ export async function POST(req: NextRequest) {
         contents: prompt,
     })
 
+    const text = generationResult.text;
+
+    if (!text) {
+        return NextResponse.json({ error: 'No response generated' }, { status: 500 });
+    }
+
+    const answer = text.trim();
+
     await prisma.message.create({
         data: {
-            answer: text.trim(),
+            answer: answer,
             question: prompt,
             userId: userId,
         },
     });
 
-    return NextResponse.json({ improvedPrompt: text.trim() });
+    return NextResponse.json({ improvedPrompt: answer });
     
     } catch (error) {
         console.error("Error in chat API:", error);
