@@ -10,6 +10,7 @@ const client = new GoogleGenAI({});
 
 const SYSTEM_PROMPT = `
 You are a helpful assistant that can help with writing.
+Do not answer the prompt question, just produce the revised user's writing
 `
 
 export async function POST(req: NextRequest) {
